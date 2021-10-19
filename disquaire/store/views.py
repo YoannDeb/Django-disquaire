@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-# from .models import ALBUMS
+from django.template import loader
 from .models import Album, Artist, Contact, Booking
 
 
@@ -17,9 +17,10 @@ def artist(request, artist_id):
 
 def index(request):
     albums = Album.objects.filter(available=True).order_by('-created_at')[:12]
-    formatted_albums = ["<li>{}</li>".format(f"<a href=store/{album.id}>{album.title}</a>") for album in albums]
-    message = """<ul>{}</ul>""".format("\n".join(formatted_albums))
-    return HttpResponse(message)
+    # formatted_albums = ["<li>{}</li>".format(f"<a href=store/{album.id}>{album.title}</a>") for album in albums]
+    context = {'albums': albums}
+    template = loader.get_template('store/index.html')
+    return HttpResponse(template.render(context, request=request))
 
 
 def listing(request):

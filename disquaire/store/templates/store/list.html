@@ -1,0 +1,9 @@
+<h2 class="section-heading mb-4">
+<!--    <span class="section-heading-upper">Albums</span>-->
+    <span class="section-heading-lower">Albums</span>
+</h2>
+<ul>
+    {% for album in albums %}
+        <li>{{ album.title }}</li>
+    {% endfor %}
+</ul>

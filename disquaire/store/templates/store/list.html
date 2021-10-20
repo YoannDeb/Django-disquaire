@@ -1,15 +1,19 @@
 <h2 class="section-heading mb-4">
 <!--    <span class="section-heading-upper">Albums</span>-->
-    <span class="section-heading-lower">Albums</span>
+    <span class="section-heading-lower">{{list_title}}</span>
 </h2>
+
+{% include 'search_form.html' %}
+
 {% for album in albums %}
+</br>
     <div class="text-center">
-        <a href="/">
+        <a href="{% url 'store:detail' album_id=album.id %}">
             <img class="img-responsive" src="{{ album.picture }}" alt="{{ album.title }}">
         </a>
-        <h3><a href="/">{{ album.title }}</a></h3>
+        <h3><a href="{% url 'store:detail' album_id=album.id %}">{{ album.title }}</a></h3>
         {% for artist in album.artists.all %}
-            <p>{{ artist.name }}</p>
+        <p><a href="{% url 'store:artist' artist_id=artist.id %}">{{ artist.name }}</a></p>
         {% endfor %}
     </div>
 <!--{% if forloop.counter|divisibleby:3 %}<div class="clearfix"></div>{% endif %}-->

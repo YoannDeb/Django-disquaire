@@ -1,7 +1,6 @@
-from django.http import HttpResponse
-from django.template import loader
 from .models import Album, Artist, Contact, Booking
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 def index(request):
@@ -12,9 +11,19 @@ def index(request):
 
 
 def listing(request):
-    albums = Album.objects.all().order_by('-created_at')
+    albums_list = Album.objects.filter(available=True).order_by('-created_at')
+
+    paginator = Paginator(albums_list, 9)
+    page = request.GET.get('page')
+    try:
+        albums = paginator.page(page)
+    except PageNotAnInteger:
+        albums = paginator.page(1)
+    except EmptyPage:
+        albums = paginator.page(paginator.num_pages)
     context = {
-        'albums': albums
+        'albums': albums,
+        'paginate': True
     }
     return render(request, 'store/listing.html', context)
 

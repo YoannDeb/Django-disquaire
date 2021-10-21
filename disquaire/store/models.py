@@ -2,20 +2,6 @@ from django.db import models
 
 from django.db import models
 
-# ARTISTS = {
-#   'francis-cabrel': {'name': 'Francis Cabrel'},
-#   'lej': {'name': 'Elijay'},
-#   'rosana': {'name': 'Rosana'},
-#   'maria-dolores-pradera': {'name': 'María Dolores Pradera'},
-# }
-#
-#
-# ALBUMS = [
-#   {'name': 'Sarbacane', 'artists': [ARTISTS['francis-cabrel']]},
-#   {'name': 'La Dalle', 'artists': [ARTISTS['lej']]},
-#   {'name': 'Luna Nueva', 'artists': [ARTISTS['rosana'], ARTISTS['maria-dolores-pradera']]}
-# ]
-
 
 class Artist(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -37,7 +23,7 @@ class Album(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     available = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
-    picture = models.URLField()
+    picture = models.URLField(null=True)
     artists = models.ManyToManyField(Artist, related_name='albums', blank=True)
 
     def __str__(self):
@@ -51,4 +37,4 @@ class Booking(models.Model):
     album = models.OneToOneField(Album, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.contact.name
+        return f"Album : '{self.album.title}' - Contact : '{self.contact.name}'"
